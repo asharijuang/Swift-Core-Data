@@ -20,11 +20,11 @@ class ViewController: UIViewController {
         
         let context: NSManagedObjectContext = appDel.managedObjectContext
         // call entity and connect to users
-        let newUser = NSEntityDescription.insertNewObjectForEntityForName("Users", inManagedObjectContext: context)
+        var newUser = NSEntityDescription.insertNewObjectForEntityForName("Users", inManagedObjectContext: context)
         
         // add object to entity
         newUser.setValue("asharijuang", forKey: "username")
-        newUser.setValue("password", forKey: "pasword")
+        newUser.setValue("password", forKey: "password")
         
         // coba simpan jika berhasil dan tidak
         do {
@@ -37,8 +37,21 @@ class ViewController: UIViewController {
         let request = NSFetchRequest(entityName: "Users")
         
         do {
-            let result = try context.executeFetchRequest(request)
-            print(result)
+            
+            let results = try context.executeFetchRequest(request)
+            // menampilkan object yang terakhir
+            print(results)
+            
+            // results berupa array, maka kita perlu menjabarkannya
+            if results.count > 0 {
+            
+                for result in results as! [NSManagedObject] {
+                    // tampilkan result berdasarkan key atau atribute name 
+                    print(result.valueForKey("username"))
+                    print(result.valueForKey("password"))
+                }
+            }
+            
         }catch {
             print("Something wrong")
         }
